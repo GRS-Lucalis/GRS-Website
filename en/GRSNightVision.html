@@ -1,0 +1,137 @@
+<!--
+title: GRS: Night Vision
+description: 
+published: true
+date: 2026-01-08T16:55:58.737Z
+tags: 
+editor: code
+dateCreated: 2026-01-08T16:21:42.520Z
+-->
+
+<img src="/grs.jpg" alt="grs.jpg" />`<html>
+<body>
+<!--StartFragment--><html><head></head><body><h1>GRS Night Vision and Lights - Project Status Report</h1>
+<p><strong>Date:</strong> January 8, 2026<br>
+<strong>Platform:</strong> Arma Reforger (Enfusion Engine)<br>
+<strong>Developer:</strong> Lucalis / GRS Modding Team</p>
+<hr>
+<h2>Executive Summary</h2>
+<p>The GRS Night Vision and Lights mod is a comprehensive night vision, thermal imaging, and IR lighting system for Arma Reforger. The project provides an alternative/complement to the existing NV-System mod with additional features including HDR thermal imaging, IR strobes, weapon-mounted IR lasers, and cross-mod compatibility.</p>
+<p><strong>Current Status:</strong> Active Development - Core systems functional, some issues pending resolution.</p>
+<hr>
+<h2>System Architecture</h2>
+<h3>Core Components</h3>
+
+Component | File | Status | Description
+-- | -- | -- | --
+Night Vision | GRS_NightVisionComponent.c | ✅ Functional | Main NVG gadget with HDR effects, auto-brightness, gain control
+Thermal Imaging V2 | GRS_ThermalComponentV2.c | ✅ Functional | HDR-based thermal (weather-safe, no flickering)
+IR System | GRS_IRSystem.c | ✅ Functional | Centralized IR visibility controller with cross-mod polling
+IR Laser | GRS_IRLaser.c | ✅ Functional | Weapon-mountable IR laser entity
+Lights Component | GRS_NVL_LightsComponent.c | ✅ Functional | Universal flashlight/IR light system
+Strobe Component | GRS_NVL_StrobeComponent.c | ✅ Functional | IR/visible strobe lights
+Network Component | GRS_NVL_NetworkComponent.c | ✅ Functional | Multiplayer state synchronization
+Camera Handler | GRS_CharacterCameraHandlerComponent.c | ✅ Functional | Alpha bias for 1st person device hiding
+
+
+<hr>
+<h2>Multiplayer Architecture</h2>
+<h3>State Replication</h3>
+<pre><code>GRS_NVL_NetworkComponent
+├── Flashlight State (bool) → All Clients
+├── IR State (bool) → All Clients  
+├── Strobe State (bool) → All Clients
+├── NVG Active (bool) → All Clients
+└── Thermal Active (bool) → All Clients
+</code></pre>
+<h3>Authority Model</h3>
+<ul>
+<li><strong>Client:</strong> Requests state changes via RPC</li>
+<li><strong>Server:</strong> Validates and broadcasts state</li>
+<li><strong>All Clients:</strong> Apply visual effects locally based on received state</li>
+</ul>
+<hr>
+<h2>Recommendations</h2>
+<h3>Immediate Priorities</h3>
+<ol>
+<li>
+<p><strong>Resolve Alpha Bias Issue</strong></p>
+<ul>
+<li>Compare working vs non-working prefab configurations in detail</li>
+<li>Test changing <code>GenericEntity</code> to <code>GameEntity</code></li>
+<li>Verify material "Accept User Alpha Test Param" is enabled on all NVG materials</li>
+<li>Consider alternative 1st person hiding methods (mesh swapping, render layer)</li>
+</ul>
+</li>
+<li>
+<p><strong>Remove Debug Logging</strong></p>
+<ul>
+<li>Clean up <code>Print()</code> statements from production code</li>
+<li>Add conditional compilation or log level filtering</li>
+</ul>
+</li>
+</ol>
+<h3>Future Enhancements</h3>
+<ol>
+<li>
+<p><strong>Heat Source System Expansion</strong></p>
+<ul>
+<li>Vehicle engine heat</li>
+<li>Weapon heat from firing</li>
+<li>Environmental heat sources (fires, explosions)</li>
+<li>Player exertion-based heat</li>
+</ul>
+</li>
+<li>
+<p><strong>Additional Devices</strong></p>
+<ul>
+<li>PEQ-15 IR laser/illuminator combo</li>
+<li>AN/PVS-14 variants</li>
+<li>ENVG-B fusion device</li>
+<li>Thermal weapon sights</li>
+</ul>
+</li>
+<li>
+<p><strong>Quality of Life</strong></p>
+<ul>
+<li>UI overlay showing current mode/brightness</li>
+<li>Battery system for devices</li>
+<li>Damage/malfunction system</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2>File Structure</h2>
+<pre><code>GRS Night Vision and Lights/
+├── Assets/
+│   ├── Shaders/
+│   │   ├── NVSystem/
+│   │   │   ├── Colors/ (HDR materials)
+│   │   │   └── Grains/ (Film grain materials)
+│   │   └── ThermalSystem/ (Thermal palette materials)
+│   ├── attachments/ (3D models, textures)
+│   └── Data/ (Additional materials)
+├── Configs/
+│   ├── System/
+│   │   ├── chimeraInputCommon.conf (Input bindings)
+│   │   └── keyBindingMenu.conf (Key binding UI)
+│   └── ControlHints/
+├── Prefabs/
+│   ├── Items/NVG/ (NVG device prefabs)
+│   ├── Thermal/ (Heat light prefabs)
+│   ├── Weapons/Attachments/Laser/ (Weapon attachments)
+│   └── Characters/ (Character overrides)
+├── Scripts/
+│   └── Game/
+│       ├── NightVision/ (Core NVG scripts)
+│       ├── Thermal/ (Thermal system scripts)
+│       └── Lights/ (Light/strobe scripts)
+└── Textures/ (Thermal filter textures)
+</code></pre>
+<hr>
+<h2>Conclusion</h2>
+<p>The GRS Night Vision and Lights mod provides a robust alternative night vision system for Arma Reforger with unique features not found in other mods. The cross-mod compatibility system ensures players can use GRS IR devices with any NVG mod. The main outstanding issue is the first-person device hiding which requires further investigation into prefab and material configuration differences.</p>
+<p><strong>Overall Completion:</strong> ~90%</p>
+<p><strong>Blockers:</strong> Alpha bias first-person hiding not working consistently across all prefabs.</p></body></html><!--EndFragment-->
+</body>
+</html>`
