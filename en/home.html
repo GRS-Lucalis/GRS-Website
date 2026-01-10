@@ -1,0 +1,359 @@
+<!--
+title: GRS Home Page
+description: 
+published: true
+date: 2026-01-10T07:17:28.569Z
+tags: 
+editor: code
+dateCreated: 2025-12-16T06:43:25.879Z
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grey Reign Systems (GRS)</title>
+
+  <meta name="description" content="Grey Reign Systems (GRS) is a professional, community-driven mod development team creating modular, performance-focused gear for Arma Reforger." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-main:#070A0F;
+      --bg-soft:#0C1424;
+      --panel:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --text:#EAF0FF;
+      --muted:rgba(234,240,255,.68);
+      --accent:#7CFFB2;
+      --accent2:#7CCBFF;
+      --radius:18px;
+      --shadow:0 30px 80px rgba(0,0,0,.55);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      font-family: Inter, system-ui, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(124,255,178,.14), transparent 60%),
+        radial-gradient(1000px 700px at 90% 20%, rgba(124,203,255,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg-main), var(--bg-soft));
+    }
+
+    .wrap{
+      max-width:1200px;
+      margin:0 auto;
+      padding:48px 24px 72px;
+      display:grid;
+      gap:28px;
+    }
+
+    /* ---------- HEADER ---------- */
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+    }
+
+    .brand{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+
+    .logo{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:linear-gradient(135deg, var(--accent), var(--accent2));
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow:0 12px 40px rgba(124,255,178,.25);
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-weight:800;
+    }
+
+    .brand span{
+      display:block;
+      margin-top:3px;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:500;
+    }
+
+    .nav a{
+      text-decoration:none;
+      font-size:13px;
+      font-weight:700;
+      color:var(--text);
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.05);
+      transition:.15s ease;
+    }
+
+    .nav a:hover{
+      background:rgba(255,255,255,.10);
+      transform:translateY(-1px);
+    }
+
+    /* ---------- MAIN ---------- */
+
+    main{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:48px;
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:36px;
+    }
+
+    @media(max-width:900px){
+      .hero{ grid-template-columns:1fr; }
+    }
+
+    .hero h2{
+      font-size:44px;
+      line-height:1.05;
+      margin:0 0 14px 0;
+      font-weight:800;
+    }
+
+    .hero p{
+      max-width:62ch;
+      font-size:16px;
+      line-height:1.7;
+      color:var(--muted);
+      margin:0 0 24px 0;
+    }
+
+    .cta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      padding:14px 18px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition:.15s ease;
+    }
+
+    .btn.primary{
+      background:linear-gradient(135deg, rgba(124,255,178,.25), rgba(124,203,255,.20));
+      border-color:rgba(124,255,178,.45);
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.10);
+    }
+
+    /* ---------- ABOUT ---------- */
+
+    .about{
+      padding:0 48px 48px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:28px;
+    }
+
+    @media(max-width:900px){
+      .about{ grid-template-columns:1fr; }
+    }
+
+    .panel{
+      background:rgba(0,0,0,.20);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:28px;
+    }
+
+    .panel h3{
+      margin:0 0 14px 0;
+      font-size:13px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-weight:800;
+      color:rgba(234,240,255,.85);
+    }
+
+    .panel p{
+      margin:0 0 14px 0;
+      font-size:14.5px;
+      line-height:1.65;
+      color:var(--muted);
+    }
+
+    .panel ul{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:12px;
+    }
+
+    .panel li{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .panel li::before{
+      content:"■";
+      font-size:10px;
+      margin-top:4px;
+      color:var(--accent);
+    }
+
+    /* ---------- FOOTER ---------- */
+
+    footer{
+      padding:20px 28px;
+      border-top:1px solid var(--border);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12.5px;
+      color:var(--muted);
+      background:rgba(0,0,0,.25);
+    }
+
+    footer a{
+      color:var(--text);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(234,240,255,.3);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="wrap">
+
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Grey Reign Systems</h1>
+          <span>Professional Mod Development Team</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="http://grs-mods.net/en/home" target="_blank">Discord / Community</a>
+      </nav>
+    </header>
+
+    <main>
+
+      <section class="hero">
+        <div>
+          <h2>Modular Gear.<br>Built Right.</h2>
+
+          <p>
+            Grey Reign Systems (GRS) is a professional, community-driven mod development team
+            specializing in modular equipment, systems, and frameworks for Arma Reforger.
+            We focus on realism, performance, and long-term maintainability—without sacrificing usability.
+          </p>
+
+          <div class="cta">
+            <a class="btn primary" href="http://grs-mods.net/en/home" target="_blank">
+              Join the GRS Community →
+            </a>
+            <a class="btn" href="#">
+              View Mods & Releases ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Design Philosophy</h3>
+          <p>
+            Every GRS asset is designed with real gameplay constraints in mind.
+            Nothing is added without purpose, and nothing stays broken.
+          </p>
+          <ul>
+            <li>Modular systems that scale across factions and playstyles</li>
+            <li>Performance-conscious scripting and asset design</li>
+            <li>Clear iteration based on real player feedback</li>
+            <li>Framework-first thinking for long-term expansion</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="about">
+        <div class="panel">
+          <h3>About Grey Reign Systems</h3>
+          <p>
+            GRS was founded with the goal of raising the standard for community-made content.
+            We operate like a small studio—using structured development, testing cycles,
+            and open communication with our users.
+          </p>
+          <p>
+            Our mods cover apparel, vests, rigs, belts, bags, weapons, helmets,
+            electronics, and shared core frameworks that other modders can integrate
+            into their own projects.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>How We Work</h3>
+          <ul>
+            <li>Community polls directly influence development priorities</li>
+            <li>Beta testing and public feedback drive iteration</li>
+            <li>Dependencies are minimized to improve accessibility</li>
+            <li>Issues are tracked, acknowledged, and resolved transparently</li>
+            <li>Systems are built to support both PvE and PvP environments</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer>
+        <div>
+          <strong>Welcome to the reign.</strong> — Grey Reign Systems
+        </div>
+        <div>
+          <a href="http://grs-mods.net/en/home" target="_blank">Community Hub</a>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+</body>
+</html>
