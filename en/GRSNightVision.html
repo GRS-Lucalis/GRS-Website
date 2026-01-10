@@ -2,7 +2,7 @@
 title: GRS: Night Vision
 description: 
 published: true
-date: 2026-01-10T06:13:28.110Z
+date: 2026-01-10T17:41:43.510Z
 tags: 
 editor: code
 dateCreated: 2026-01-08T16:21:42.520Z
@@ -13,1102 +13,630 @@ dateCreated: 2026-01-08T16:21:42.520Z
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRS Night Vision and Lights Mod - Technical Overview</title>
+    <title>GRS Night Vision and Lights - Status Report</title>
     <style>
-        :root {
-            --primary: #1a5f2a;
-            --primary-dark: #0d3d16;
-            --primary-light: #2d8a42;
-            --accent: #4ade80;
-            --bg-dark: #0a0f0a;
-            --bg-card: #111a11;
-            --bg-card-hover: #162016;
-            --text: #e8f5e8;
-            --text-muted: #9cb89c;
-            --border: #2d4a2d;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
             line-height: 1.6;
-            min-height: 100vh;
         }
-
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-bottom: 3px solid var(--accent);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ade80' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .header .subtitle {
-            font-size: 1.2rem;
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        .header-meta {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .header-meta span {
-            background: rgba(0,0,0,0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        /* Navigation */
-        .nav {
-            background: var(--bg-card);
-            padding: 1rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: all 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-            background: rgba(74, 222, 128, 0.1);
-        }
-
-        /* Main Content */
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 20px;
         }
-
-        /* Sections */
-        section {
-            margin-bottom: 3rem;
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-bottom: 3px solid #cc0000;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
         }
-
-        .section-header {
+        
+        .header img {
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .header .subtitle {
+            color: #cc0000;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .header .date {
+            color: #888;
+            margin-top: 10px;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .progress-label {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px solid var(--border);
+            justify-content: space-between;
+            margin-bottom: 10px;
         }
-
-        .section-header h2 {
-            font-size: 1.75rem;
-            color: var(--accent);
+        
+        .progress-label span {
+            font-size: 1.2em;
+            font-weight: 600;
         }
-
-        .section-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
+        
+        .progress-label .percentage {
+            color: #cc0000;
+            font-size: 1.5em;
+        }
+        
+        .progress-bar {
+            background: #333;
             border-radius: 10px;
+            height: 25px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #cc0000 0%, #ff3333 100%);
+            height: 100%;
+            width: 98%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        
+        /* Section Styling */
+        .section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            background: linear-gradient(90deg, #cc0000 0%, #990000 100%);
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
+            gap: 10px;
         }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.2s;
+        
+        .section-header .icon {
+            font-size: 1.2em;
         }
-
-        .card:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--primary-light);
+        
+        .section-content {
+            padding: 20px;
         }
-
-        .card h3 {
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-        }
-
-        .card h4 {
-            color: var(--text);
-            margin: 1rem 0 0.5rem;
-            font-size: 1rem;
-        }
-
-        /* Grid Layouts */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
+        
         /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin-top: 10px;
         }
-
+        
         th, td {
-            padding: 0.75rem 1rem;
+            padding: 12px 15px;
             text-align: left;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #333;
         }
-
+        
         th {
-            background: var(--primary-dark);
-            color: var(--accent);
+            background: #252525;
+            color: #cc0000;
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.85em;
             letter-spacing: 0.5px;
         }
-
+        
         tr:hover {
-            background: rgba(74, 222, 128, 0.05);
+            background: #222;
         }
-
-        /* Code Blocks */
-        .code-block {
-            background: #0d1117;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', monospace;
-            font-size: 0.85rem;
-            margin: 1rem 0;
+        
+        /* Status Badges */
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
         }
-
-        .code-block pre {
-            margin: 0;
-            color: #c9d1d9;
+        
+        .status-complete {
+            background: #1a3d1a;
+            color: #4ade80;
+            border: 1px solid #2d5a2d;
         }
-
-        /* Highlight Box */
-        .highlight-box {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            border-radius: 12px;
-            padding: 2rem;
-            margin: 2rem 0;
+        
+        .status-progress {
+            background: #3d3d1a;
+            color: #fbbf24;
+            border: 1px solid #5a5a2d;
         }
-
-        .highlight-box h3 {
+        
+        .status-pending {
+            background: #2d2d2d;
+            color: #888;
+            border: 1px solid #444;
+        }
+        
+        /* Keybinds */
+        .keybind {
+            display: inline-block;
+            background: #333;
             color: #fff;
-            margin-bottom: 1rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9em;
+            border: 1px solid #555;
+            margin: 2px;
         }
-
-        .highlight-grid {
+        
+        /* Stats Grid */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
         }
-
-        .highlight-item {
-            background: rgba(0,0,0,0.3);
-            padding: 1rem;
+        
+        .stat-card {
+            background: #252525;
+            border: 1px solid #333;
             border-radius: 8px;
+            padding: 20px;
             text-align: center;
         }
-
-        .highlight-item .number {
-            font-size: 2rem;
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            color: #cc0000;
             font-weight: 700;
-            color: var(--accent);
         }
-
-        .highlight-item .label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        
+        .stat-card .label {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
-
-        /* Feature List */
-        .feature-list {
+        
+        /* In Progress Section */
+        .in-progress-item {
+            background: #252525;
+            border-left: 4px solid #fbbf24;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .in-progress-item h4 {
+            color: #fbbf24;
+            margin-bottom: 8px;
+        }
+        
+        .in-progress-item p {
+            color: #aaa;
+            font-size: 0.95em;
+        }
+        
+        /* Remaining Tasks */
+        .task-list {
             list-style: none;
         }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .feature-list li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        /* Color Swatches */
-        .color-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .color-swatch {
+        
+        .task-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #333;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            background: rgba(0,0,0,0.3);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            gap: 12px;
         }
-
-        .color-swatch .dot {
-            width: 16px;
-            height: 16px;
+        
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .task-icon {
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.2);
-        }
-
-        /* Tree Structure */
-        .tree {
-            font-family: 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.8;
-            background: #0d1117;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .tree-item {
-            color: var(--text-muted);
-        }
-
-        .tree-folder {
-            color: var(--accent);
-        }
-
-        .tree-file {
-            color: #79c0ff;
-        }
-
-        /* Keybind Display */
-        .keybind {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        kbd {
-            background: linear-gradient(180deg, #3a3a3a 0%, #222 100%);
-            border: 1px solid #555;
-            border-radius: 4px;
-            padding: 0.2rem 0.5rem;
-            font-family: 'Consolas', monospace;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 0 #111;
-        }
-
-        /* Flow Diagram */
-        .flow-diagram {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            padding: 1.5rem;
-            background: rgba(0,0,0,0.3);
+            font-size: 0.8em;
+        }
+        
+        .task-icon.progress {
+            background: #3d3d1a;
+            color: #fbbf24;
+            border: 2px solid #fbbf24;
+        }
+        
+        .task-icon.pending {
+            background: #2d2d2d;
+            color: #666;
+            border: 2px solid #555;
+        }
+        
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+            border: 2px solid #cc0000;
             border-radius: 8px;
-            margin: 1rem 0;
+            padding: 25px;
+            margin-top: 30px;
         }
-
-        .flow-step {
-            background: var(--primary);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            text-align: center;
+        
+        .summary-box h3 {
+            color: #cc0000;
+            margin-bottom: 15px;
+            font-size: 1.3em;
         }
-
-        .flow-arrow {
-            color: var(--accent);
-            font-size: 1.2rem;
+        
+        .summary-box p {
+            color: #ccc;
+            line-height: 1.8;
         }
-
-        /* Badge */
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .badge-success {
-            background: rgba(74, 222, 128, 0.2);
-            color: var(--accent);
-        }
-
-        .badge-info {
-            background: rgba(59, 130, 246, 0.2);
-            color: var(--info);
-        }
-
-        .badge-warning {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-        }
-
+        
         /* Footer */
         .footer {
-            background: var(--bg-card);
-            border-top: 1px solid var(--border);
-            padding: 2rem;
             text-align: center;
-            color: var(--text-muted);
+            padding: 30px;
+            color: #666;
+            border-top: 1px solid #333;
+            margin-top: 40px;
         }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.75rem;
-            }
-
-            .header-meta {
-                gap: 1rem;
-            }
-
-            .nav-links {
-                gap: 0.5rem;
-            }
-
-            .container {
-                padding: 1rem;
-            }
-
-            .flow-diagram {
-                flex-direction: column;
-            }
-
-            .flow-arrow {
-                transform: rotate(90deg);
-            }
+        
+        .footer .brand {
+            color: #cc0000;
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <h1>🌙 GRS Night Vision and Lights</h1>
-            <p class="subtitle">Comprehensive Tactical Equipment System for Arma Reforger</p>
-            <div class="header-meta">
-                <span>📦 Version 1.0</span>
-                <span>🎮 Enfusion Engine</span>
-                <span>📅 January 2026</span>
-                <span>👥 Full Multiplayer Support</span>
+    <div class="header">
+        <img src="data:image/jpeg;base64,/9j/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAEAAAAAAAD/7QBwUGhvdG9zaG9wIDMuMAA4QklNBAQAAAAAADgcAVoAAxslRxwCAAACAAIcAjcACDIwMjUwODA3HAI8AAYxNzU1OTIcAlAADGphY2t0aW5uZXlpaThCSU0EJQAAAAAAEO48EI0+50EQt3Ma0IS5Pm//wAARCAH8A8ADAREAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9sAQwACAgICAgIDAgIDBQMDAwUGBQUFBQYIBgYGBgYICggICAgICAoKCgoKCgoKDAwMDAwMDg4ODg4PDw8PDw8PDw8P/9sAQwECAwMEBAQHBAQHEAsJCxAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQ/90ABAB4/9oADAMBAAIRAxEAPwD8D2bc3PWtACgBMYoAWgBc4oAPegA5pJALnFDQC5Pr2pgH0NUkAc5NKwCEnOaLAOGeuamwCEn8aqwBkkelosAEmkAc9vypgMPrnFICMyKOnNK4B9ocH5eKVwHC8uF4VyBUgOF/dD/loaAGm9uT1kJoAYbiVjyxJoAYZnPJOadwF81z3ouAnmN60XATzG9aLgG8+tABvPrQAbz60XAN59aLgG8+tFwDefWi4BvY9aLgJvP+TRcA3n/JouAbz/k07gG8/5NIA3n/JoAN5/yaADef8mgA3n/ACaADef8mgA3n/JoAN5/yaBpBvP+TQAbz/k0AG8+tABvPrQAeY3rQAbz60AG8+tABvPrQAeY3rSAQvQAbz60AG8+tACbz/k0AG8/5NFwDef8mi4BvP8Ak0AG8/5NABvP+TSAQuf8mgA3n/JoAN5/yaADef8AJoAN5/yaADef8mncBd59aLgHmN60XAPMX1ouAeY3rRcA8xvWi4B5retFwF85/Wi4B5z455ouAedJ3NFwDzpfWgA86T1/z+dACea570gG7z1OaADcx70AJk0AJQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAJkUAG4UAG4UAG4UAG4UAGRmgA3CgA3CgA3CgD/9D8D2bc3PWtACgBec0AOA7/ANKAD9KAAfnTACPzpBcO/PX1oATvxxTTAXuMdDQAHigBeT0GKpsACnnPWouA7bxknbVNgRGaMfd+b9BWdwIGmc8DgUrgREk9eaACkAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAmRQAZFABuFABuFABuFABuFABuFABuFABuFABuFABuFABkUAGRQAZFABkUAGRQAZFABkUALQAUAFABQAmRQAZFABuFABuFABuFABuFABuFACBqAF3CgAyKADcKADcKADIoAMigAyKADIoAMigBaACgAoAKADOaACgAz2oAM4oATIoANwoAMigAyKAFzmgAyBQAm4UAG4UAIGoAXNABkUAGRQAZFABuFABuFADcmgBSaADNAC7hQAbhQAbhQAbhQAhNACEnvQAlABQAUAFABQAUAFABQAUAFABQB//0fwOwOlaAGOvpQAtAC/1oAXr3pgKAM0gF+nAoEncTnn+dAWTEOMdaBi/1oAOn1oAXGev50AOwB9KAInnVeE5qbgVWdn61IDKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoATgUAJ3/APrUAJ+FABz6UAHPpQAc0AGDQAlABQAoHrQAYoASgAoAKAFwaADBoAMGgAxQAuKAHYFADcf5xQAY6UAKB60AGKAFwKAGGgAzQAZoAOfSgBKACgAoAKACgAoAKACgBefSgBQKAF2igBMf5xQAmDQAc+lABQA4UALQAUAJgUAHHpQAtACGgBD7fyoATBoAMEUAAoAUg5oATmgA59KADn0oASgAoAM4oAKAF59KACgAHSgAoASgBc0AJQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAH/0vwNPf1rQBaAACgBec0AOA7/ANKAD9KAAfnTACPzpBcO/PX1oATvxxTTAXuMdDQAHigBeT0GKpsACnnPWouA7bxknbVNgRGaMfd+b9BWdwIGmc8DgUrgREk9eaACkAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAmRQAZFABuFABuFABuFABuFABuFABuFABuFABuFABuFABkUAGRQAZFABkUAGRQAZFABkUALQAUAFABQAmRQAZFABuFABuFABuFABuFABuFACBqAF3CgAyKADcKADcKADIoAMigAyKADIoAMigBaACgAoAKADOaACgAz2oAM4oATIoANwoAMigAyKAFzmgAyBQAm4UAG4UAIGoAXNABkUAGRQAZFABuFABuFADcmgBSaADNAC7hQAbhQAbhQAbhQAhNACEnvQAlABQAUAFABQAUAFABQAUAFABQB//9P8Ax1+taAGOvpQAtAC/1oAXr3pgKAM0gF+nAoEncTnn+dAWTEOMdaBi/wBaADp9aAFxnr+dADsAfSgCJ51XhOam4FVnZ+tSAygAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAE4FACAZNACbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAZFABkUAGRQAZFABkUAGRQAZFAC0AFABQAUAJkUAGRQAbhQAbhQAbhQAbhQAbhQAgagBdwoAMigA3CgA3CgAyKADIoAMigAyKADIoAWgAoAKACgAzmgAoAM9qADOKAEyKADcKADIoAMigBc5oAMgUAJuFABuFACBqAFzQAZFABkUAGRQAbhQAbhQA3JoAUmgAzQAu4UAG4UAG4UAG4UAITQAhJ70AJQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//U/A+gAoAXmgBwNADqACgAoAKACgAoAKACgAoAKACgBD0oAiPH40ANPB5oAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgBMCgAwKADAoAMCgAwKADAoAMCgAwKADAoAMCgAwKADAoAMCgAwKADAoANooANooANooAbtoAXaKADaKADaKAG7aAF2igA2igBu2gBdtABtFABtFABtFABtFADdtAC7aADaKADaKADaKADaKADaKAG7aAF2igA2igBu2gBdtABtFABtFABtFADdpoANpoANtABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNABtNAH/1fwQHNaAA60AGM0AOxigBMUAGKADAoAMCgAwKADAoAMCgAwKADFADSMUANxQA2gAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgD//W/BAc1oBIvODQBIxyevFADKACgAoAKACgAoAKACgAoAKACgBCM0ANIoAbigBMUAGKADFACYoATigBMUAJigBMUAJigAx/nigBMUAJigBNtABtoANtABtoANtABtoANtABtoANtABtoANtABtoANtABigBMYoATbQAmPzoATbQAmPegBMUAJigBMUAJigBMUAGKAExQAmKAExQAmKAExQAmKAExQAYoATbQAbetABt9qADbQAbetABtoANtABtoANtABtoANtABtoANvtQAbfagA20AG2gA20AG2gA20AG2gA20AG2gA20AG32oANtABtoANvtQAbfagA29qADafWgA2n1oANp9aADafWgA2n1oANp9aADafWgA2n1oANp9aADafWgA2n1oANp9aADafWgA2n1oANp9aAP/X/BCMVoA/FAB3oAKACgAoAKACgAoAKACgAoAKAEPIoAbQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//0PwQIzWgDhQA4dKAFoAKACgAoAKACgAoAKACgAoAQjOaAGFc0AIBigB2BQAYoAMCgAwKADAoAMCgAwKADAoAMCgAwKADAoATaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaKADaPSgA2igA2igA2igA2igA2igA2igA2j0oANo9KADaPSgA2j0oANooANooANooANooANo9KADaKADaKAG4FABgUAGBQAYFABgUAGBQAYFABgUAGBQAYFABgUAGBQAYFACbRQAbRQAbRQAbRQAbRQAbRQAbRQAbRQAbRQAm0UAG0UAG0UAG0UAG0UAG0UAG0UAJtFACbRQAm0UAJtFACbRQAm0UAJtFACbRQAm0UAN2mgA2mgBNp9KADH+cUAf/R/BAjFaAOHWgB3bPegBKACgAoAKACgAoAKACgAoAKACgAoAbj0oATGeaAFxigAxigAwKADFABigBMUAGKADFABgUAGKADFACYoAXFABigAxQAYoAMZoAMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoAMUAGKADFABgUAGBQAYoAMUAGKADFABgUAGKADFABigBMUAGKADFABigAxQAY9qADH+cUAGKADFABigBMUAGKADFABigAxQAYoAMUAGKADFABigAxQAYoATFABigAxQAYoAMUAJigBMUAJigBMUAJigBMUAJigBMUAJigBMUAJigBMUAJj0oATFACYoATFACYoATFADdtABtNABtNABtoANtAH//0vwQHFaAOxzQApHpQAlABQAUAFABQAUAFABQAUAFABQAUAJj3oAbtoANtABtoANtABtoANtABtoATbQAbfagA2+1ABt9qADb7UAG32oANvtQAbfagA2+1ABt9qADb7UAG32oANvtQAbfagA2+1ABtoANtABtoANtABtoANtABtoANtABtoANtABtoANtABt9qADPtQAZoAM0AGaADNABmgAzQAZoAM0AGaADNABmgAzQAZoAM0AGaADNABmgAzQAZoAM0AGKADH+cUAGKADFABigBMUAGKADFABigAxQAYoATGKAExigBMYoATGKAExigBMYoATGKAExigBNooAbtoANp9aADafWgA2mgBNp9aAG7aADafWgBu00AG00AG00AG00AG00AG00AG00AG00Af/9P8EB1rQBwHBoAfuxQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbhQAbqADdQAbqADdQAbqADdQAbqADdQAbqADdQAbqADdQAbqADdQAbqADdQAbqADdQAu40ALuNAC7jQAu40ALuNAC7jQAu40ALuNAC7jQAu40ALuNAC7jQAu40ALuNAC7jQAu40ALuNAC7jQAu40ALuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuoAN1ABuFABuFABuFABuFABuFABuFABuFABuFABuFABuFABuFABuoAbuFABuFABuFAH/9T8D+etaAB4oAeOlAC0AFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9X8D2GGIrQB1ABQAo60AOoAKACgAoAKACgAoAKACgAoAKACgBpFACUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//1vwPPSugBRQAoYdqAHg4oAWgAoAKACgAoAKACgAoAKACgAoAaRQAhFADSBQAhAoAbigBaADrQAlABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAf/9f8EGFdADwc8UALQAtABQAUAFABQAUAFABQAUAFABQAhGaAGkUAJigBtABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9D8ECcV0ASZxQAoNADqACgAoAKACgAoAKACgAoAKAGmgBpXIoAbigBMUALQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAH/0fwQAxXQA4DFACigB1ABQAUAFABQAUAFABQAUANJwaAGMwxQBHnFADqACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA//0vwQAxmugB4oAdQAUAFABQAUAFABQAUANY80ANHWgB1ABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB/9P8D88V0AOoAKACgAoAKACgAoAKAGk0ANAzQAoPpQA+gAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgD//U/A/INdADqACgAoAKACgAoAQ0ANxzQAtADh0oAcDxQAtABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9X8D6ACgAoAKACgAoAKAGEcUANHWgBRQA8UAOoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAP/9b8D6ACgAoAKACgAoAbjigBcdqAHd6AFoAdQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9f8D6ACgAoAKACgBpPpQAA0AOoAdQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAf/9D8D6ACgAoAKAGmgBoPegB9ABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAH/0fwPoAKACgBD0oATtQA6gAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgD/0vwPoAKACgBpPpQAg60APNABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9P8D6ACgAoAYRzQAoHNACjpQAtABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9T8D6ACgAoAaRigBQKAHDpQAtABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9X8D6ACgAoAaeDQAoyOlADqACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgD/1vwPoAKACgBpGaAE70AFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB//9k=" alt="GRS Logo">
+        <h1>GRS Night Vision and Lights</h1>
+        <div class="subtitle">Project Status Report</div>
+        <div class="date">January 10, 2026 • Arma Reforger (Enfusion Engine)</div>
+    </div>
+    
+    <div class="container">
+        <!-- Progress Section -->
+        <div class="progress-section">
+            <div class="progress-label">
+                <span>Overall Completion</span>
+                <span class="percentage">98%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
             </div>
         </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="nav">
-        <ul class="nav-links">
-            <li><a href="#summary">Summary</a></li>
-            <li><a href="#nvg">Night Vision</a></li>
-            <li><a href="#thermal">Thermal</a></li>
-            <li><a href="#lights">Lighting</a></li>
-            <li><a href="#strobe">Strobe</a></li>
-            <li><a href="#radial">Radial Menu</a></li>
-            <li><a href="#network">Network</a></li>
-            <li><a href="#specs">Specifications</a></li>
-        </ul>
-    </nav>
-
-    <main class="container">
-        <!-- Executive Summary -->
-        <section id="summary">
-            <div class="section-header">
-                <div class="section-icon">📋</div>
-                <h2>Executive Summary</h2>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="value">15+</div>
+                <div class="label">Core Scripts</div>
             </div>
-
-            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
-                The GRS Night Vision and Lights mod is a comprehensive equipment enhancement system for Arma Reforger 
-                that provides realistic night vision, thermal imaging, and tactical lighting capabilities with full 
-                multiplayer synchronization.
-            </p>
-
-            <div class="highlight-box">
-                <h3>Key Statistics</h3>
-                <div class="highlight-grid">
-                    <div class="highlight-item">
-                        <div class="number">4,500+</div>
-                        <div class="label">Lines of Code</div>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="number">8</div>
-                        <div class="label">Major Systems</div>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="number">20+</div>
-                        <div class="label">Network RPCs</div>
-                    </div>
-                    <div class="highlight-item">
-                        <div class="number">50+</div>
-                        <div class="label">Config Options</div>
-                    </div>
-                </div>
+            <div class="stat-card">
+                <div class="value">20+</div>
+                <div class="label">Network RPCs</div>
             </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <h3>✨ Key Features</h3>
-                    <ul class="feature-list">
-                        <li>Realistic night vision with adjustable gain</li>
-                        <li>Multiple phosphor color options</li>
-                        <li>Thermal imaging with color palettes</li>
-                        <li>Tactical flashlights and IR illuminators</li>
-                        <li>Configurable strobe lighting</li>
-                        <li>8 customizable light colors</li>
-                        <li>Full network replication</li>
-                        <li>Intuitive radial menu interface</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>🎯 Target Applications</h3>
-                    <ul class="feature-list">
-                        <li>Military simulation (MilSim) communities</li>
-                        <li>Tactical realism servers</li>
-                        <li>Night operations scenarios</li>
-                        <li>Combined arms gameplay</li>
-                        <li>Training and educational use</li>
-                        <li>Casual night-time gameplay enhancement</li>
-                    </ul>
-                </div>
+            <div class="stat-card">
+                <div class="value">50+</div>
+                <div class="label">Configurable Attributes</div>
             </div>
-        </section>
-
+            <div class="stat-card">
+                <div class="value">4,500+</div>
+                <div class="label">Lines of Code</div>
+            </div>
+        </div>
+        
         <!-- Night Vision System -->
-        <section id="nvg">
+        <div class="section">
             <div class="section-header">
-                <div class="section-icon">👁️</div>
-                <h2>Night Vision System</h2>
+                <span class="icon">🌙</span>
+                Night Vision System
             </div>
-
-            <div class="card">
-                <h3>GRS_NightVisionComponent</h3>
-                <p>Advanced night vision simulation with realistic visual effects and intelligent automation.</p>
-
-                <div class="grid-2" style="margin-top: 1.5rem;">
-                    <div>
-                        <h4>Core Features</h4>
-                        <table>
-                            <tr>
-                                <td><strong>Manual Brightness</strong></td>
-                                <td>0.05 - 20 LV with adaptive steps</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Auto-Brightness</strong></td>
-                                <td>Time-of-day based activation</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Phosphor Colors</strong></td>
-                                <td>Green, White, Blue, Amber, Red</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Film Grain</strong></td>
-                                <td>Authentic tube noise effect</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Signal Blemish</strong></td>
-                                <td>Optional imperfection simulation</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <h4>Auto-System Behavior</h4>
-                        <ul class="feature-list">
-                            <li>Activates at dusk (default: 19:00)</li>
-                            <li>Deactivates at dawn (default: 07:00)</li>
-                            <li>Manual override preserved</li>
-                            <li>Smooth brightness transitions</li>
-                            <li>Configurable threshold hours</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <h4>Default Keybinds</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Action</th>
-                            <th>Keybind</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Toggle NVG</td>
-                            <td><span class="keybind"><kbd>N</kbd></span></td>
-                        </tr>
-                        <tr>
-                            <td>Increase Brightness</td>
-                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>Scroll ↑</kbd></span></td>
-                        </tr>
-                        <tr>
-                            <td>Decrease Brightness</td>
-                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>Scroll ↓</kbd></span></td>
-                        </tr>
-                        <tr>
-                            <td>Reset Brightness</td>
-                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>R</kbd></span></td>
-                        </tr>
-                        <tr>
-                            <td>Toggle Auto-Gain</td>
-                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>G</kbd></span></td>
-                        </tr>
-                        <tr>
-                            <td>Cycle Phosphor Color</td>
-                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>N</kbd></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Thermal Imaging -->
-        <section id="thermal">
-            <div class="section-header">
-                <div class="section-icon">🌡️</div>
-                <h2>Thermal Imaging System</h2>
-            </div>
-
-            <div class="card">
-                <h3>GRS_ThermalComponentV2</h3>
-                <p>Stand-alone thermal imaging with configurable color palettes for target identification.</p>
-
+            <div class="section-content">
                 <table>
                     <thead>
                         <tr>
                             <th>Feature</th>
-                            <th>Description</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>Multiple Palettes</strong></td>
-                            <td>White-Hot, Black-Hot, and custom color schemes</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Palette Cycling</strong></td>
-                            <td>Quick switching between thermal views via radial menu</td>
-                        </tr>
-                        <tr>
-                            <td><strong>NVG Integration</strong></td>
-                            <td>Can be combined with NVG devices or used standalone</td>
-                        </tr>
+                        <tr><td>Green Phosphor HDR Effect</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>White Phosphor HDR Effect</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Film Grain Overlay</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Manual Brightness Control (Shift+Scroll)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Auto On/Off System (time-based)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Auto Gain Control (Shift+G)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Phosphor Color Cycling (Shift+N)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>NVG Flip Animation</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Brightness Reset (Shift+R)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Alpha Bias 1st Person Hiding</td><td><span class="status status-complete">✓ Complete</span></td></tr>
                     </tbody>
                 </table>
             </div>
-        </section>
-
-        <!-- Tactical Lighting -->
-        <section id="lights">
+        </div>
+        
+        <!-- Thermal Imaging -->
+        <div class="section">
             <div class="section-header">
-                <div class="section-icon">🔦</div>
-                <h2>Tactical Lighting System</h2>
+                <span class="icon">🔥</span>
+                Thermal Imaging V2
             </div>
-
-            <div class="card">
-                <h3>GRS_NVL_LightsComponent</h3>
-                <p>Comprehensive lighting system supporting flashlights, IR illuminators, and full color customization.</p>
-
-                <div class="grid-2" style="margin-top: 1.5rem;">
-                    <div>
-                        <h4>Light Modes</h4>
-                        <table>
-                            <tr>
-                                <td><strong>Flashlight</strong></td>
-                                <td>Visible light (0.1 - 6.0 LV)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>IR Illuminator</strong></td>
-                                <td>Infrared, NVG-visible only</td>
-                            </tr>
-                            <tr>
-                                <td><strong>IR Cover Toggle</strong></td>
-                                <td>Makes IR visible without NVG</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <h4>Default Keybinds</h4>
-                        <table>
-                            <tr>
-                                <td>Toggle Flashlight</td>
-                                <td><kbd>L</kbd></td>
-                            </tr>
-                            <tr>
-                                <td>Toggle IR</td>
-                                <td><kbd>;</kbd></td>
-                            </tr>
-                            <tr>
-                                <td>Brightness Up</td>
-                                <td><kbd>]</kbd></td>
-                            </tr>
-                            <tr>
-                                <td>Brightness Down</td>
-                                <td><kbd>[</kbd></td>
-                            </tr>
-                            <tr>
-                                <td>Radial Menu</td>
-                                <td><kbd>,</kbd></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-                <h4>Available Colors</h4>
-                <div class="color-grid">
-                    <div class="color-swatch"><div class="dot" style="background: #ffffff;"></div> White</div>
-                    <div class="color-swatch"><div class="dot" style="background: #ff0000;"></div> Red</div>
-                    <div class="color-swatch"><div class="dot" style="background: #00ff00;"></div> Green</div>
-                    <div class="color-swatch"><div class="dot" style="background: #0000ff;"></div> Blue</div>
-                    <div class="color-swatch"><div class="dot" style="background: #ffff00;"></div> Yellow</div>
-                    <div class="color-swatch"><div class="dot" style="background: #ff8000;"></div> Orange</div>
-                    <div class="color-swatch"><div class="dot" style="background: #00ffff;"></div> Cyan</div>
-                    <div class="color-swatch"><div class="dot" style="background: #ff00ff;"></div> Magenta</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Strobe System -->
-        <section id="strobe">
-            <div class="section-header">
-                <div class="section-icon">⚡</div>
-                <h2>Strobe System</h2>
-            </div>
-
-            <div class="card">
-                <h3>GRS_NVL_StrobeComponent</h3>
-                <p>Tactical strobe lighting for identification and signaling with configurable patterns.</p>
-
-                <div class="grid-2" style="margin-top: 1.5rem;">
-                    <div>
-                        <h4>Features</h4>
-                        <table>
-                            <tr>
-                                <td><strong>Pattern</strong></td>
-                                <td>Configurable on/off sequences</td>
-                            </tr>
-                            <tr>
-                                <td><strong>IR/Visible</strong></td>
-                                <td>Toggle between modes</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Colors</strong></td>
-                                <td>8 options (same as lights)</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Brightness</strong></td>
-                                <td>0.1 - 6.0 LV adjustable</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <h4>Default Pattern</h4>
-                        <div class="code-block">
-                            <pre>Double-Flash Pattern:
-0.08s ON  → 0.08s OFF
-0.08s ON  → 0.60s OFF
-(repeat)</pre>
-                        </div>
-                        <p style="margin-top: 1rem;"><strong>Keybind:</strong> <kbd>'</kbd> (Apostrophe)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Radial Menu -->
-        <section id="radial">
-            <div class="section-header">
-                <div class="section-icon">🎛️</div>
-                <h2>Radial Menu Interface</h2>
-            </div>
-
-            <div class="card">
-                <h3>GRS_RadialMenuItemsComponent</h3>
-                <p>Intuitive visual interface for comprehensive equipment control without memorizing keybinds.</p>
-
-                <h4>Menu Structure</h4>
-                <div class="tree">
-                    <div class="tree-item"><span class="tree-folder">📁 Device Category</span> (e.g., "PEQ-15")</div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">🔦 Flashlight [ON/OFF]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">👁️ IR Light [ON/OFF]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">🎨 Color [Current]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── White</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Red</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Green</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Blue</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Yellow</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Orange</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Cyan</div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── Magenta</div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">🔲 IR Cover [ON/REMOVED]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-folder">⚡ Strobe [ON/OFF]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">🎨 Color [Current]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">🔲 IR Cover [ON/REMOVED]</span></div>
-                    <br>
-                    <div class="tree-item"><span class="tree-folder">📁 NVG Device</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">👁️ NVG [ON/OFF]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">🎨 Phosphor Color [Current]</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── (Dynamic color options)</div>
-                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-file">🌡️ Thermal [ON/OFF]</span></div>
-                </div>
-
-                <h4 style="margin-top: 1.5rem;">Supported Equipment Locations</h4>
-                <div class="grid-4">
-                    <div class="card" style="padding: 1rem; text-align: center;">
-                        <strong>🔫 Weapon Rails</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Attachments & accessories</p>
-                    </div>
-                    <div class="card" style="padding: 1rem; text-align: center;">
-                        <strong>⛑️ Helmet</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Mounted devices</p>
-                    </div>
-                    <div class="card" style="padding: 1rem; text-align: center;">
-                        <strong>🎽 Body</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Worn equipment</p>
-                    </div>
-                    <div class="card" style="padding: 1rem; text-align: center;">
-                        <strong>📦 Slots</strong>
-                        <p style="font-size: 0.85rem; color: var(--text-muted);">Dedicated equipment</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Network Architecture -->
-        <section id="network">
-            <div class="section-header">
-                <div class="section-icon">🌐</div>
-                <h2>Network Architecture</h2>
-            </div>
-
-            <div class="card">
-                <h3>Full Multiplayer Synchronization</h3>
-                <p>All equipment states are fully synchronized across multiplayer sessions using a client-authoritative model with server validation.</p>
-
-                <h4>RPC Flow</h4>
-                <div class="flow-diagram">
-                    <div class="flow-step">Client Action</div>
-                    <span class="flow-arrow">→</span>
-                    <div class="flow-step">Local Apply</div>
-                    <span class="flow-arrow">→</span>
-                    <div class="flow-step">RPC to Server</div>
-                    <span class="flow-arrow">→</span>
-                    <div class="flow-step">Server Validates</div>
-                    <span class="flow-arrow">→</span>
-                    <div class="flow-step">Broadcast to All</div>
-                </div>
-
-                <h4>Synchronized States</h4>
+            <div class="section-content">
                 <table>
                     <thead>
                         <tr>
-                            <th>Component</th>
-                            <th>Synced Data</th>
+                            <th>Feature</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>HDR-Based Rendering (no weather flicker)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>4 Palettes (White Hot, Black Hot, Green Hot, FLIR)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Palette Cycling</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- IR & Lighting -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">💡</span>
+                IR & Lighting System
+            </div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>IR Strobes (only visible with NVGs)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>IR Illuminators</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>IR Lasers (weapon attachments)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Visible Flashlights</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>IR Cover Removal (toggle visible/IR mode)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>8 Light Colors (White, Red, Blue, Green, Yellow, Orange, Purple, Cyan)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Light Brightness Adjustment (]/[)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Strobe Colors (8 options)</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Strobe Brightness Controls</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Radial Menu -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">🎯</span>
+                Radial Menu System
+            </div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>All toggles and submenus</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Custom Imageset Icons</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Cross-Mod Compatibility -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">🔗</span>
+                Cross-Mod Compatibility
+            </div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mod</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>NV-System</td><td><span class="status status-complete">✓ Supported</span></td></tr>
+                        <tr><td>RHS</td><td><span class="status status-complete">✓ Supported</span></td></tr>
+                        <tr><td>Other NVG Mods (generic gadget detection)</td><td><span class="status status-complete">✓ Supported</span></td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 15px; color: #888; font-size: 0.9em;">
+                    Implementation uses polling-based detection (250ms) to find any active SCR_GadgetComponent with EGadgetType.NIGHT_VISION.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Network/Multiplayer -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">🌐</span>
+                Network / Multiplayer
+            </div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Light On/Off Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>IR On/Off Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Strobe On/Off Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Light Color Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Light Brightness Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Strobe Color Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>Strobe Brightness Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>IR Cover State Sync</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                        <tr><td>JIP (Join-In-Progress) State</td><td><span class="status status-complete">✓ Complete</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- In Progress -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">🔧</span>
+                In Progress
+            </div>
+            <div class="section-content">
+                <div class="in-progress-item">
+                    <h4>NVG Texture Variants</h4>
+                    <p>Creating color variants for GPNVG-18 and PVS-31 (Black, Tan/FDE, OD Green)</p>
+                </div>
+                <table style="margin-top: 15px;">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>Color Variants</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><span class="badge badge-success">Lights</span></td>
-                            <td>On/Off, Color Index, Brightness, IR Cover State</td>
+                            <td>GPNVG-18</td>
+                            <td>Black, Tan/FDE, OD Green</td>
+                            <td><span class="status status-progress">🟡 Textures in progress</span></td>
                         </tr>
                         <tr>
-                            <td><span class="badge badge-success">Strobe</span></td>
-                            <td>Enabled, Color Index, Brightness, IR Cover State</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge badge-info">NVG</span></td>
-                            <td>Active State, Animation State</td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge badge-info">Thermal</span></td>
-                            <td>Active State</td>
+                            <td>PVS-31</td>
+                            <td>Black, Tan/FDE, OD Green</td>
+                            <td><span class="status status-progress">🟡 Textures in progress</span></td>
                         </tr>
                     </tbody>
                 </table>
-
-                <h4>Network Component</h4>
-                <p><code>GRS_NVL_NetworkComponent</code> handles all equipment synchronization:</p>
-                <ul class="feature-list">
-                    <li>Lives on character prefab for easy access</li>
-                    <li>Handles all equipment RPCs centrally</li>
-                    <li>Recursively searches character and weapons for equipment</li>
-                    <li>Prevents duplicate RPC calls with suppression flags</li>
-                    <li>Supports late-joining players via RplSave/RplLoad</li>
+                <p style="margin-top: 15px; color: #888; font-size: 0.9em;">
+                    <strong>Remaining work:</strong> Complete texture files → Create prefab variants → Add arsenal/inventory entries → Localization
+                </p>
+            </div>
+        </div>
+        
+        <!-- Keybinds -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">⌨️</span>
+                Keybinds
+            </div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Keyboard</th>
+                            <th>Gamepad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Flashlight Toggle</td><td><span class="keybind">L</span></td><td>-</td></tr>
+                        <tr><td>IR Toggle</td><td><span class="keybind">;</span></td><td><span class="keybind">LB</span> + <span class="keybind">D-pad Up</span></td></tr>
+                        <tr><td>Strobe Toggle</td><td><span class="keybind">'</span></td><td>-</td></tr>
+                        <tr><td>Radial Menu</td><td><span class="keybind">,</span></td><td><span class="keybind">LB</span> + <span class="keybind">D-pad Down</span></td></tr>
+                        <tr><td>Light Brightness Up</td><td><span class="keybind">]</span></td><td>-</td></tr>
+                        <tr><td>Light Brightness Down</td><td><span class="keybind">[</span></td><td>-</td></tr>
+                        <tr><td>NVG Toggle</td><td><span class="keybind">N</span></td><td>-</td></tr>
+                        <tr><td>NVG Brightness</td><td><span class="keybind">Shift</span> + <span class="keybind">Scroll</span></td><td>-</td></tr>
+                        <tr><td>NVG Brightness Reset</td><td><span class="keybind">Shift</span> + <span class="keybind">R</span></td><td>-</td></tr>
+                        <tr><td>Auto Gain Toggle</td><td><span class="keybind">Shift</span> + <span class="keybind">G</span></td><td>-</td></tr>
+                        <tr><td>Phosphor Color Cycle</td><td><span class="keybind">Shift</span> + <span class="keybind">N</span></td><td>-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Remaining Tasks -->
+        <div class="section">
+            <div class="section-header">
+                <span class="icon">📋</span>
+                Remaining Before Release
+            </div>
+            <div class="section-content">
+                <ul class="task-list">
+                    <li>
+                        <span class="task-icon progress">●</span>
+                        <span>GPNVG/PVS-31 Texture Variants</span>
+                    </li>
+                    <li>
+                        <span class="task-icon pending">○</span>
+                        <span>Prefab Variants Setup (pending textures)</span>
+                    </li>
+                    <li>
+                        <span class="task-icon pending">○</span>
+                        <span>Remove Debug Logging</span>
+                    </li>
+                    <li>
+                        <span class="task-icon pending">○</span>
+                        <span>Final Multiplayer Testing</span>
+                    </li>
+                    <li>
+                        <span class="task-icon pending">○</span>
+                        <span>Workshop Upload</span>
+                    </li>
                 </ul>
             </div>
-        </section>
-
-        <!-- Technical Specifications -->
-        <section id="specs">
-            <div class="section-header">
-                <div class="section-icon">⚙️</div>
-                <h2>Technical Specifications</h2>
-            </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Performance</h3>
-                    <table>
-                        <tr>
-                            <td>Brightness Adjustment Rate</td>
-                            <td>50ms limit</td>
-                        </tr>
-                        <tr>
-                            <td>Auto-System Check</td>
-                            <td>Every 0.5s</td>
-                        </tr>
-                        <tr>
-                            <td>Deferred Init</td>
-                            <td>100-200ms</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <h3>Post-Process Slots</h3>
-                    <table>
-                        <tr>
-                            <td>Thermal Imaging</td>
-                            <td>Slot 11</td>
-                        </tr>
-                        <tr>
-                            <td>Film Grain</td>
-                            <td>Slot 9</td>
-                        </tr>
-                        <tr>
-                            <td>Blemish/Noise</td>
-                            <td>Slot 8</td>
-                        </tr>
-                        <tr>
-                            <td>HDR Colorization</td>
-                            <td>Slot 16</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Brightness Ranges</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>System</th>
-                            <th>Minimum</th>
-                            <th>Maximum</th>
-                            <th>Default</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>NVG Gain</td>
-                            <td>0.05</td>
-                            <td>20.0</td>
-                            <td>1.5</td>
-                        </tr>
-                        <tr>
-                            <td>Flashlight</td>
-                            <td>0.1</td>
-                            <td>6.0</td>
-                            <td>6.0</td>
-                        </tr>
-                        <tr>
-                            <td>IR Light</td>
-                            <td>0.1</td>
-                            <td>6.0</td>
-                            <td>1.0</td>
-                        </tr>
-                        <tr>
-                            <td>Strobe</td>
-                            <td>0.1</td>
-                            <td>6.0</td>
-                            <td>3.0</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <h3>File Structure</h3>
-                <div class="tree">
-                    <div class="tree-item"><span class="tree-folder">📁 GRS Night Vision and Lights/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 Scripts/Game/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 NightVision/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_NightVisionComponent.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Thermal/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_ThermalComponentV2.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Lights/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_LightsComponent.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_StrobeComponent.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_NetworkComponent.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_HelmetLightSource.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_IRSystem.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">📁 RadialMenu/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_RadialMenuItemsComponent.c</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 Configs/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Input/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">chimeraInputCommon.conf</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">keyBindingMenu.conf</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">📁 ControlHints/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">AvailableActions.conf</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 UI/Textures/Icons/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_RadialMenu_Icons.imageset</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-folder">📁 Prefabs/</span></div>
-                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">(Equipment prefabs)</span></div>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Equipment Slot System</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Slot Name</th>
-                            <th>Purpose</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>GRS_NV_ItemSlot</code></td>
-                            <td>Night vision devices</td>
-                        </tr>
-                        <tr>
-                            <td><code>GRS_Strobe</code></td>
-                            <td>Body-worn strobes</td>
-                        </tr>
-                        <tr>
-                            <td><code>GRS_Vlite</code></td>
-                            <td>V-Lite markers</td>
-                        </tr>
-                        <tr>
-                            <td><code>GRS_Raillite</code></td>
-                            <td>Rail-mounted lights</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Future Roadmap -->
-        <section>
-            <div class="section-header">
-                <div class="section-icon">🚀</div>
-                <h2>Future Considerations</h2>
-            </div>
-
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Potential Enhancements</h3>
-                    <ul class="feature-list">
-                        <li>Laser pointer integration</li>
-                        <li>PVS-31 binocular NVG simulation</li>
-                        <li>Additional strobe patterns</li>
-                        <li>IR laser/designator functionality</li>
-                        <li>Battery/power management system</li>
-                        <li>Zeroing integration for weapon lights</li>
-                    </ul>
-                </div>
-                <div class="card">
-                    <h3>Compatibility</h3>
-                    <ul class="feature-list">
-                        <li>Forward compatible with Enfusion updates</li>
-                        <li>Modular architecture for customization</li>
-                        <li>Network protocol designed for extensibility</li>
-                        <li>Clean integration with vanilla systems</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p><strong>GRS Night Vision and Lights Mod</strong></p>
-        <p style="margin-top: 0.5rem;">Document prepared for internal review and stakeholder presentation</p>
-        <p style="margin-top: 0.5rem; font-size: 0.85rem;">January 2026 • Arma Reforger • Enfusion Engine</p>
-    </footer>
+        </div>
+        
+        <!-- Summary -->
+        <div class="summary-box">
+            <h3>Summary</h3>
+            <p>
+                The mod is <strong>feature-complete</strong> with all core systems working including night vision, thermal imaging, 
+                IR devices, lights, radial menu, cross-mod compatibility, and full multiplayer synchronization. 
+                Currently adding cosmetic texture variants for the GPNVG-18 and PVS-31 to give players color options 
+                (Black, Tan/FDE, OD Green). Once textures are finished, create the prefab variants, clean up debug logs, 
+                and it's ready for Workshop release.
+            </p>
+        </div>
+        
+        <div class="footer">
+            <span class="brand">GRS Modding Team</span> • Arma Reforger
+        </div>
+    </div>
 </body>
 </html>
