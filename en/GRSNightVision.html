@@ -2,354 +2,1113 @@
 title: GRS: Night Vision
 description: 
 published: true
-date: 2026-01-10T06:09:00.711Z
+date: 2026-01-10T06:09:27.371Z
 tags: 
 editor: code
 dateCreated: 2026-01-08T16:21:42.520Z
 -->
 
-# GRS Night Vision and Lights Mod
-## Comprehensive Technical Overview
-
-**Version:** 1.0  
-**Platform:** Arma Reforger (Enfusion Engine)  
-**Author:** GRS Development Team  
-**Date:** January 2026
-
----
-
-## Executive Summary
-
-The GRS Night Vision and Lights mod is a comprehensive equipment enhancement system for Arma Reforger that provides realistic night vision, thermal imaging, and tactical lighting capabilities. The mod features full multiplayer synchronization, intuitive radial menu controls, and extensive customization options.
-
-### Key Highlights
-
-- **Night Vision System** with adjustable gain, auto-brightness, and multiple phosphor color options
-- **Thermal Imaging** with configurable color palettes
-- **Tactical Lighting** including flashlights, IR illuminators, and strobes
-- **8 Light Colors** for all lighting systems (White, Red, Green, Blue, Yellow, Orange, Cyan, Magenta)
-- **Full Network Replication** ensuring all players see consistent equipment states
-- **Radial Menu Interface** for quick, intuitive equipment control
-- **Keybind Support** for rapid access to common functions
-
----
-
-## System Components
-
-### 1. Night Vision System (`GRS_NightVisionComponent`)
-
-The night vision system provides realistic NVG simulation with the following features:
-
-#### Core Features
-| Feature | Description |
-|---------|-------------|
-| **Manual Brightness Control** | Adjustable gain from 0.05 to 20 LV with adaptive step sizes |
-| **Auto-Brightness System** | Automatic on/off based on time of day (configurable dawn/dusk hours) |
-| **Phosphor Color Selection** | Multiple phosphor options (Green, White, Blue, Amber, Red, etc.) |
-| **Film Grain Effect** | Authentic NVG visual noise overlay |
-| **Signal Blemish Effect** | Optional tube imperfection simulation |
-
-#### Auto-System Behavior
-- Automatically activates NVG at dusk (default: 19:00)
-- Automatically deactivates at dawn (default: 07:00)
-- Manual override available (day/night override states preserved)
-- Smooth brightness transitions
-
-#### Default Keybinds
-| Action | Key |
-|--------|-----|
-| Toggle NVG | `N` |
-| Increase Brightness | `Shift + Scroll Up` |
-| Decrease Brightness | `Shift + Scroll Down` |
-| Reset Brightness | `Shift + R` |
-| Toggle Auto-Gain | `Shift + G` |
-| Cycle Phosphor Color | `Shift + N` |
-
----
-
-### 2. Thermal Imaging System (`GRS_ThermalComponentV2`)
-
-Stand-alone thermal imaging component with configurable palettes.
-
-#### Features
-| Feature | Description |
-|---------|-------------|
-| **Multiple Palettes** | White-Hot, Black-Hot, and custom color schemes |
-| **Palette Cycling** | Quick switching between thermal views |
-| **NVG Integration** | Can be combined with NVG devices or used standalone |
-
----
-
-### 3. Tactical Lighting System (`GRS_NVL_LightsComponent`)
-
-Comprehensive lighting system for flashlights and IR illuminators.
-
-#### Features
-| Feature | Description |
-|---------|-------------|
-| **Flashlight Mode** | Visible light with adjustable brightness (0.1 - 6.0 LV) |
-| **IR Illuminator Mode** | Infrared light visible only through NVG |
-| **8 Color Options** | White, Red, Green, Blue, Yellow, Orange, Cyan, Magenta |
-| **IR Cover System** | Toggle IR filter to make IR light visible without NVG |
-| **Brightness Control** | Real-time adjustment with network sync |
-
-#### Default Keybinds
-| Action | Key |
-|--------|-----|
-| Toggle Flashlight | `L` |
-| Toggle IR Light | `;` |
-| Brightness Up | `]` |
-| Brightness Down | `[` |
-| Open Radial Menu | `,` |
-
----
-
-### 4. Strobe System (`GRS_NVL_StrobeComponent`)
-
-Tactical strobe lighting for identification and signaling.
-
-#### Features
-| Feature | Description |
-|---------|-------------|
-| **Configurable Pattern** | Custom on/off timing sequences |
-| **IR/Visible Modes** | IR strobe (NVG only) or visible strobe |
-| **8 Color Options** | Same color palette as flashlights |
-| **Brightness Control** | Adjustable from 0.1 to 6.0 LV |
-| **IR Cover Toggle** | Convert IR strobe to visible strobe |
-
-#### Default Pattern
-Double-flash pattern: `0.08s ON → 0.08s OFF → 0.08s ON → 0.6s OFF`
-
-#### Default Keybind
-| Action | Key |
-|--------|-----|
-| Toggle Strobe | `'` (Apostrophe) |
-
----
-
-### 5. IR Visibility System (`GRS_IRSystem`)
-
-Global system managing IR light visibility across all players.
-
-#### Behavior
-- IR lights only visible when local player has NVG active
-- Automatically updates all IR sources when NVG state changes
-- Supports both player equipment and weapon-mounted lights
-
----
-
-### 6. Radial Menu System (`GRS_RadialMenuItemsComponent`)
-
-Intuitive visual interface for equipment control.
-
-#### Menu Structure
-```
-Device Category (e.g., "PEQ-15")
-├── Flashlight [ON/OFF]
-├── IR Light [ON/OFF]
-├── Color [Current Color]
-│   ├── White
-│   ├── Red
-│   ├── Green
-│   ├── Blue
-│   ├── Yellow
-│   ├── Orange
-│   ├── Cyan
-│   └── Magenta
-├── IR Cover [ON/REMOVED]
-└── Strobe [ON/OFF]
-    ├── Color [Current Color]
-    │   └── (8 color options)
-    └── IR Cover [ON/REMOVED]
-
-NVG Device
-├── NVG [ON/OFF]
-├── Phosphor Color [Current]
-│   └── (Dynamic color options)
-└── Thermal [ON/OFF] (if equipped)
-```
-
-#### Supported Equipment Locations
-- Weapon attachments (rails, accessories)
-- Helmet-mounted devices
-- Body-worn equipment
-- Dedicated equipment slots (NVG slot, Strobe slot, etc.)
-
----
-
-## Network Architecture
-
-### Replication Model
-
-All equipment states are fully synchronized across multiplayer sessions using a client-authoritative model with server validation.
-
-#### Synchronized States
-| Component | Synced Data |
-|-----------|-------------|
-| **Lights** | On/Off, Color Index, Brightness, IR Cover State |
-| **Strobe** | Enabled, Color Index, Brightness, IR Cover State |
-| **NVG** | Active State, Animation State |
-| **Thermal** | Active State |
-
-#### RPC Flow
-```
-Client Action → Local Apply → RPC to Server → Server Validates → Broadcast to All Clients
-```
-
-#### Network Component (`GRS_NVL_NetworkComponent`)
-- Lives on character prefab
-- Handles all equipment RPCs
-- Recursively searches character and weapons for equipment
-- Prevents duplicate RPC calls with suppression flags
-
----
-
-## Technical Specifications
-
-### Performance Considerations
-- Brightness adjustment rate-limited to 50ms intervals
-- Auto-system checks every 0.5 seconds
-- Deferred initialization (100-200ms) for network stability
-- Efficient recursive component searches
-
-### Material System
-| Effect | Post-Process Slot |
-|--------|-------------------|
-| Thermal Imaging | Slot 11 |
-| Film Grain | Slot 9 |
-| Blemish/Noise | Slot 8 |
-| HDR Colorization | Slot 16 |
-
-### Brightness Ranges
-| System | Min | Max | Default |
-|--------|-----|-----|---------|
-| NVG Gain | 0.05 | 20.0 | 1.5 |
-| Flashlight | 0.1 | 6.0 | 6.0 |
-| IR Light | 0.1 | 6.0 | 1.0 |
-| Strobe | 0.1 | 6.0 | 3.0 |
-
----
-
-## Configuration
-
-### Prefab Attributes
-
-#### NVG Component
-```
-m_fBaseBrightness: 1.5
-m_bManualBrightnessEnabled: true
-m_bAutoSystemEnabled: true
-m_iDawnHour: 7
-m_iDuskHour: 19
-m_fTransitionRate: 0.5
-```
-
-#### Lights Component
-```
-m_fDefaultFlashlightBrightness: 6.0
-m_fDefaultIRBrightness: 1.0
-m_fMinBrightness: 0.1
-m_fMaxBrightness: 6.0
-m_fBrightnessStep: 0.2
-```
-
-#### Strobe Component
-```
-m_sStrobePattern: "0.08 0.08 0.08 0.6"
-m_fDefaultBrightness: 3.0
-m_fMinBrightness: 0.1
-m_fMaxBrightness: 6.0
-```
-
----
-
-## Equipment Slot System
-
-Custom equipment slots for dedicated gear:
-
-| Slot Name | Purpose |
-|-----------|---------|
-| `GRS_NV_ItemSlot` | Night vision devices |
-| `GRS_Strobe` | Body-worn strobes |
-| `GRS_Vlite` | V-Lite markers |
-| `GRS_Raillite` | Rail-mounted lights |
-
----
-
-## Integration Points
-
-### Required Dependencies
-- `SCR_GadgetComponent` (base gadget functionality)
-- `SCR_PlayerController` (player detection)
-- `EquipedLoadoutStorageComponent` (equipment access)
-- `BaseWeaponManagerComponent` (weapon attachment access)
-
-### Optional Integration
-- `SCR_AdditionalGameModeSettingsComponent` (vanilla night noise disable)
-- `SignalsManagerComponent` (animation control)
-
----
-
-## File Structure
-
-```
-GRS Night Vision and Lights/
-├── Scripts/
-│   └── Game/
-│       ├── NightVision/
-│       │   └── GRS_NightVisionComponent.c
-│       ├── Thermal/
-│       │   └── GRS_ThermalComponentV2.c
-│       ├── Lights/
-│       │   ├── GRS_NVL_LightsComponent.c
-│       │   ├── GRS_NVL_StrobeComponent.c
-│       │   ├── GRS_NVL_NetworkComponent.c
-│       │   ├── GRS_NVL_HelmetLightSource.c
-│       │   └── GRS_IRSystem.c
-│       └── RadialMenu/
-│           └── GRS_RadialMenuItemsComponent.c
-├── Configs/
-│   ├── Input/
-│   │   ├── chimeraInputCommon.conf
-│   │   └── keyBindingMenu.conf
-│   └── ControlHints/
-│       └── AvailableActions.conf
-├── UI/
-│   └── Textures/
-│       └── Icons/
-│           └── GRS_RadialMenu_Icons.imageset
-└── Prefabs/
-    └── (Equipment prefabs)
-```
-
----
-
-## Future Considerations
-
-### Potential Enhancements
-- Laser pointer integration
-- PVS-31 binocular NVG simulation
-- Additional strobe patterns
-- IR laser/designator functionality
-- Battery/power management system
-- Zeroing integration for weapon lights
-
-### Compatibility Notes
-- Designed for forward compatibility with Enfusion updates
-- Modular architecture allows component-level customization
-- Network protocol designed for extensibility
-
----
-
-## Summary
-
-The GRS Night Vision and Lights mod provides a comprehensive, production-ready tactical equipment system for Arma Reforger. With full network replication, intuitive controls, and extensive customization options, it delivers an immersive and realistic night operations experience suitable for both casual play and serious milsim communities.
-
-**Total Lines of Code:** ~4,500+  
-**Components:** 8 major systems  
-**Network RPCs:** 20+ synchronized actions  
-**Customizable Options:** 50+ configurable attributes
-
----
-
-*Document prepared for internal review and stakeholder presentation.*
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRS Night Vision and Lights Mod - Technical Overview</title>
+    <style>
+        :root {
+            --primary: #1a5f2a;
+            --primary-dark: #0d3d16;
+            --primary-light: #2d8a42;
+            --accent: #4ade80;
+            --bg-dark: #0a0f0a;
+            --bg-card: #111a11;
+            --bg-card-hover: #162016;
+            --text: #e8f5e8;
+            --text-muted: #9cb89c;
+            --border: #2d4a2d;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--accent);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ade80' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .header-meta span {
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--bg-card);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+            color: var(--accent);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary-light);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .card h4 {
+            color: var(--text);
+            margin: 1rem 0 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--primary-dark);
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            color: #c9d1d9;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .highlight-box h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .highlight-item {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .highlight-item .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .highlight-item .label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Color Swatches */
+        .color-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .color-swatch .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        /* Tree Structure */
+        .tree {
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            background: #0d1117;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .tree-item {
+            color: var(--text-muted);
+        }
+
+        .tree-folder {
+            color: var(--accent);
+        }
+
+        .tree-file {
+            color: #79c0ff;
+        }
+
+        /* Keybind Display */
+        .keybind {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        kbd {
+            background: linear-gradient(180deg, #3a3a3a 0%, #222 100%);
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 0 #111;
+        }
+
+        /* Flow Diagram */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .flow-step {
+            background: var(--primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-success {
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--accent);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .header-meta {
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .flow-diagram {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>🌙 GRS Night Vision and Lights</h1>
+            <p class="subtitle">Comprehensive Tactical Equipment System for Arma Reforger</p>
+            <div class="header-meta">
+                <span>📦 Version 1.0</span>
+                <span>🎮 Enfusion Engine</span>
+                <span>📅 January 2026</span>
+                <span>👥 Full Multiplayer Support</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#nvg">Night Vision</a></li>
+            <li><a href="#thermal">Thermal</a></li>
+            <li><a href="#lights">Lighting</a></li>
+            <li><a href="#strobe">Strobe</a></li>
+            <li><a href="#radial">Radial Menu</a></li>
+            <li><a href="#network">Network</a></li>
+            <li><a href="#specs">Specifications</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Executive Summary -->
+        <section id="summary">
+            <div class="section-header">
+                <div class="section-icon">📋</div>
+                <h2>Executive Summary</h2>
+            </div>
+
+            <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">
+                The GRS Night Vision and Lights mod is a comprehensive equipment enhancement system for Arma Reforger 
+                that provides realistic night vision, thermal imaging, and tactical lighting capabilities with full 
+                multiplayer synchronization.
+            </p>
+
+            <div class="highlight-box">
+                <h3>Key Statistics</h3>
+                <div class="highlight-grid">
+                    <div class="highlight-item">
+                        <div class="number">4,500+</div>
+                        <div class="label">Lines of Code</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="number">8</div>
+                        <div class="label">Major Systems</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="number">20+</div>
+                        <div class="label">Network RPCs</div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="number">50+</div>
+                        <div class="label">Config Options</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>✨ Key Features</h3>
+                    <ul class="feature-list">
+                        <li>Realistic night vision with adjustable gain</li>
+                        <li>Multiple phosphor color options</li>
+                        <li>Thermal imaging with color palettes</li>
+                        <li>Tactical flashlights and IR illuminators</li>
+                        <li>Configurable strobe lighting</li>
+                        <li>8 customizable light colors</li>
+                        <li>Full network replication</li>
+                        <li>Intuitive radial menu interface</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>🎯 Target Applications</h3>
+                    <ul class="feature-list">
+                        <li>Military simulation (MilSim) communities</li>
+                        <li>Tactical realism servers</li>
+                        <li>Night operations scenarios</li>
+                        <li>Combined arms gameplay</li>
+                        <li>Training and educational use</li>
+                        <li>Casual night-time gameplay enhancement</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Night Vision System -->
+        <section id="nvg">
+            <div class="section-header">
+                <div class="section-icon">👁️</div>
+                <h2>Night Vision System</h2>
+            </div>
+
+            <div class="card">
+                <h3>GRS_NightVisionComponent</h3>
+                <p>Advanced night vision simulation with realistic visual effects and intelligent automation.</p>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <h4>Core Features</h4>
+                        <table>
+                            <tr>
+                                <td><strong>Manual Brightness</strong></td>
+                                <td>0.05 - 20 LV with adaptive steps</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Auto-Brightness</strong></td>
+                                <td>Time-of-day based activation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phosphor Colors</strong></td>
+                                <td>Green, White, Blue, Amber, Red</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Film Grain</strong></td>
+                                <td>Authentic tube noise effect</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Signal Blemish</strong></td>
+                                <td>Optional imperfection simulation</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Auto-System Behavior</h4>
+                        <ul class="feature-list">
+                            <li>Activates at dusk (default: 19:00)</li>
+                            <li>Deactivates at dawn (default: 07:00)</li>
+                            <li>Manual override preserved</li>
+                            <li>Smooth brightness transitions</li>
+                            <li>Configurable threshold hours</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>Default Keybinds</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Keybind</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Toggle NVG</td>
+                            <td><span class="keybind"><kbd>N</kbd></span></td>
+                        </tr>
+                        <tr>
+                            <td>Increase Brightness</td>
+                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>Scroll ↑</kbd></span></td>
+                        </tr>
+                        <tr>
+                            <td>Decrease Brightness</td>
+                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>Scroll ↓</kbd></span></td>
+                        </tr>
+                        <tr>
+                            <td>Reset Brightness</td>
+                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>R</kbd></span></td>
+                        </tr>
+                        <tr>
+                            <td>Toggle Auto-Gain</td>
+                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>G</kbd></span></td>
+                        </tr>
+                        <tr>
+                            <td>Cycle Phosphor Color</td>
+                            <td><span class="keybind"><kbd>Shift</kbd> + <kbd>N</kbd></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Thermal Imaging -->
+        <section id="thermal">
+            <div class="section-header">
+                <div class="section-icon">🌡️</div>
+                <h2>Thermal Imaging System</h2>
+            </div>
+
+            <div class="card">
+                <h3>GRS_ThermalComponentV2</h3>
+                <p>Stand-alone thermal imaging with configurable color palettes for target identification.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Multiple Palettes</strong></td>
+                            <td>White-Hot, Black-Hot, and custom color schemes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Palette Cycling</strong></td>
+                            <td>Quick switching between thermal views via radial menu</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NVG Integration</strong></td>
+                            <td>Can be combined with NVG devices or used standalone</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Tactical Lighting -->
+        <section id="lights">
+            <div class="section-header">
+                <div class="section-icon">🔦</div>
+                <h2>Tactical Lighting System</h2>
+            </div>
+
+            <div class="card">
+                <h3>GRS_NVL_LightsComponent</h3>
+                <p>Comprehensive lighting system supporting flashlights, IR illuminators, and full color customization.</p>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <h4>Light Modes</h4>
+                        <table>
+                            <tr>
+                                <td><strong>Flashlight</strong></td>
+                                <td>Visible light (0.1 - 6.0 LV)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>IR Illuminator</strong></td>
+                                <td>Infrared, NVG-visible only</td>
+                            </tr>
+                            <tr>
+                                <td><strong>IR Cover Toggle</strong></td>
+                                <td>Makes IR visible without NVG</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Default Keybinds</h4>
+                        <table>
+                            <tr>
+                                <td>Toggle Flashlight</td>
+                                <td><kbd>L</kbd></td>
+                            </tr>
+                            <tr>
+                                <td>Toggle IR</td>
+                                <td><kbd>;</kbd></td>
+                            </tr>
+                            <tr>
+                                <td>Brightness Up</td>
+                                <td><kbd>]</kbd></td>
+                            </tr>
+                            <tr>
+                                <td>Brightness Down</td>
+                                <td><kbd>[</kbd></td>
+                            </tr>
+                            <tr>
+                                <td>Radial Menu</td>
+                                <td><kbd>,</kbd></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <h4>Available Colors</h4>
+                <div class="color-grid">
+                    <div class="color-swatch"><div class="dot" style="background: #ffffff;"></div> White</div>
+                    <div class="color-swatch"><div class="dot" style="background: #ff0000;"></div> Red</div>
+                    <div class="color-swatch"><div class="dot" style="background: #00ff00;"></div> Green</div>
+                    <div class="color-swatch"><div class="dot" style="background: #0000ff;"></div> Blue</div>
+                    <div class="color-swatch"><div class="dot" style="background: #ffff00;"></div> Yellow</div>
+                    <div class="color-swatch"><div class="dot" style="background: #ff8000;"></div> Orange</div>
+                    <div class="color-swatch"><div class="dot" style="background: #00ffff;"></div> Cyan</div>
+                    <div class="color-swatch"><div class="dot" style="background: #ff00ff;"></div> Magenta</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strobe System -->
+        <section id="strobe">
+            <div class="section-header">
+                <div class="section-icon">⚡</div>
+                <h2>Strobe System</h2>
+            </div>
+
+            <div class="card">
+                <h3>GRS_NVL_StrobeComponent</h3>
+                <p>Tactical strobe lighting for identification and signaling with configurable patterns.</p>
+
+                <div class="grid-2" style="margin-top: 1.5rem;">
+                    <div>
+                        <h4>Features</h4>
+                        <table>
+                            <tr>
+                                <td><strong>Pattern</strong></td>
+                                <td>Configurable on/off sequences</td>
+                            </tr>
+                            <tr>
+                                <td><strong>IR/Visible</strong></td>
+                                <td>Toggle between modes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Colors</strong></td>
+                                <td>8 options (same as lights)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Brightness</strong></td>
+                                <td>0.1 - 6.0 LV adjustable</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Default Pattern</h4>
+                        <div class="code-block">
+                            <pre>Double-Flash Pattern:
+0.08s ON  → 0.08s OFF
+0.08s ON  → 0.60s OFF
+(repeat)</pre>
+                        </div>
+                        <p style="margin-top: 1rem;"><strong>Keybind:</strong> <kbd>'</kbd> (Apostrophe)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Radial Menu -->
+        <section id="radial">
+            <div class="section-header">
+                <div class="section-icon">🎛️</div>
+                <h2>Radial Menu Interface</h2>
+            </div>
+
+            <div class="card">
+                <h3>GRS_RadialMenuItemsComponent</h3>
+                <p>Intuitive visual interface for comprehensive equipment control without memorizing keybinds.</p>
+
+                <h4>Menu Structure</h4>
+                <div class="tree">
+                    <div class="tree-item"><span class="tree-folder">📁 Device Category</span> (e.g., "PEQ-15")</div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">🔦 Flashlight [ON/OFF]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">👁️ IR Light [ON/OFF]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">🎨 Color [Current]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── White</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Red</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Green</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Blue</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Yellow</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Orange</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── Cyan</div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── Magenta</div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">🔲 IR Cover [ON/REMOVED]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-folder">⚡ Strobe [ON/OFF]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">🎨 Color [Current]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">🔲 IR Cover [ON/REMOVED]</span></div>
+                    <br>
+                    <div class="tree-item"><span class="tree-folder">📁 NVG Device</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-file">👁️ NVG [ON/OFF]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">🎨 Phosphor Color [Current]</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── (Dynamic color options)</div>
+                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-file">🌡️ Thermal [ON/OFF]</span></div>
+                </div>
+
+                <h4 style="margin-top: 1.5rem;">Supported Equipment Locations</h4>
+                <div class="grid-4">
+                    <div class="card" style="padding: 1rem; text-align: center;">
+                        <strong>🔫 Weapon Rails</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Attachments & accessories</p>
+                    </div>
+                    <div class="card" style="padding: 1rem; text-align: center;">
+                        <strong>⛑️ Helmet</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Mounted devices</p>
+                    </div>
+                    <div class="card" style="padding: 1rem; text-align: center;">
+                        <strong>🎽 Body</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Worn equipment</p>
+                    </div>
+                    <div class="card" style="padding: 1rem; text-align: center;">
+                        <strong>📦 Slots</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-muted);">Dedicated equipment</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Network Architecture -->
+        <section id="network">
+            <div class="section-header">
+                <div class="section-icon">🌐</div>
+                <h2>Network Architecture</h2>
+            </div>
+
+            <div class="card">
+                <h3>Full Multiplayer Synchronization</h3>
+                <p>All equipment states are fully synchronized across multiplayer sessions using a client-authoritative model with server validation.</p>
+
+                <h4>RPC Flow</h4>
+                <div class="flow-diagram">
+                    <div class="flow-step">Client Action</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">Local Apply</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">RPC to Server</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">Server Validates</div>
+                    <span class="flow-arrow">→</span>
+                    <div class="flow-step">Broadcast to All</div>
+                </div>
+
+                <h4>Synchronized States</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Synced Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="badge badge-success">Lights</span></td>
+                            <td>On/Off, Color Index, Brightness, IR Cover State</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-success">Strobe</span></td>
+                            <td>Enabled, Color Index, Brightness, IR Cover State</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-info">NVG</span></td>
+                            <td>Active State, Animation State</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge badge-info">Thermal</span></td>
+                            <td>Active State</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Network Component</h4>
+                <p><code>GRS_NVL_NetworkComponent</code> handles all equipment synchronization:</p>
+                <ul class="feature-list">
+                    <li>Lives on character prefab for easy access</li>
+                    <li>Handles all equipment RPCs centrally</li>
+                    <li>Recursively searches character and weapons for equipment</li>
+                    <li>Prevents duplicate RPC calls with suppression flags</li>
+                    <li>Supports late-joining players via RplSave/RplLoad</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Technical Specifications -->
+        <section id="specs">
+            <div class="section-header">
+                <div class="section-icon">⚙️</div>
+                <h2>Technical Specifications</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Performance</h3>
+                    <table>
+                        <tr>
+                            <td>Brightness Adjustment Rate</td>
+                            <td>50ms limit</td>
+                        </tr>
+                        <tr>
+                            <td>Auto-System Check</td>
+                            <td>Every 0.5s</td>
+                        </tr>
+                        <tr>
+                            <td>Deferred Init</td>
+                            <td>100-200ms</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>Post-Process Slots</h3>
+                    <table>
+                        <tr>
+                            <td>Thermal Imaging</td>
+                            <td>Slot 11</td>
+                        </tr>
+                        <tr>
+                            <td>Film Grain</td>
+                            <td>Slot 9</td>
+                        </tr>
+                        <tr>
+                            <td>Blemish/Noise</td>
+                            <td>Slot 8</td>
+                        </tr>
+                        <tr>
+                            <td>HDR Colorization</td>
+                            <td>Slot 16</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Brightness Ranges</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>System</th>
+                            <th>Minimum</th>
+                            <th>Maximum</th>
+                            <th>Default</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NVG Gain</td>
+                            <td>0.05</td>
+                            <td>20.0</td>
+                            <td>1.5</td>
+                        </tr>
+                        <tr>
+                            <td>Flashlight</td>
+                            <td>0.1</td>
+                            <td>6.0</td>
+                            <td>6.0</td>
+                        </tr>
+                        <tr>
+                            <td>IR Light</td>
+                            <td>0.1</td>
+                            <td>6.0</td>
+                            <td>1.0</td>
+                        </tr>
+                        <tr>
+                            <td>Strobe</td>
+                            <td>0.1</td>
+                            <td>6.0</td>
+                            <td>3.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3>File Structure</h3>
+                <div class="tree">
+                    <div class="tree-item"><span class="tree-folder">📁 GRS Night Vision and Lights/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 Scripts/Game/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 NightVision/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_NightVisionComponent.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Thermal/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_ThermalComponentV2.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Lights/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_LightsComponent.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_StrobeComponent.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_NetworkComponent.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">GRS_NVL_HelmetLightSource.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_IRSystem.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">📁 RadialMenu/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_RadialMenuItemsComponent.c</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 Configs/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-folder">📁 Input/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├── <span class="tree-file">chimeraInputCommon.conf</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">keyBindingMenu.conf</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-folder">📁 ControlHints/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">AvailableActions.conf</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;├── <span class="tree-folder">📁 UI/Textures/Icons/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└── <span class="tree-file">GRS_RadialMenu_Icons.imageset</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;└── <span class="tree-folder">📁 Prefabs/</span></div>
+                    <div class="tree-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span class="tree-file">(Equipment prefabs)</span></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Equipment Slot System</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Slot Name</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>GRS_NV_ItemSlot</code></td>
+                            <td>Night vision devices</td>
+                        </tr>
+                        <tr>
+                            <td><code>GRS_Strobe</code></td>
+                            <td>Body-worn strobes</td>
+                        </tr>
+                        <tr>
+                            <td><code>GRS_Vlite</code></td>
+                            <td>V-Lite markers</td>
+                        </tr>
+                        <tr>
+                            <td><code>GRS_Raillite</code></td>
+                            <td>Rail-mounted lights</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Future Roadmap -->
+        <section>
+            <div class="section-header">
+                <div class="section-icon">🚀</div>
+                <h2>Future Considerations</h2>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Potential Enhancements</h3>
+                    <ul class="feature-list">
+                        <li>Laser pointer integration</li>
+                        <li>PVS-31 binocular NVG simulation</li>
+                        <li>Additional strobe patterns</li>
+                        <li>IR laser/designator functionality</li>
+                        <li>Battery/power management system</li>
+                        <li>Zeroing integration for weapon lights</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Compatibility</h3>
+                    <ul class="feature-list">
+                        <li>Forward compatible with Enfusion updates</li>
+                        <li>Modular architecture for customization</li>
+                        <li>Network protocol designed for extensibility</li>
+                        <li>Clean integration with vanilla systems</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p><strong>GRS Night Vision and Lights Mod</strong></p>
+        <p style="margin-top: 0.5rem;">Document prepared for internal review and stakeholder presentation</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem;">January 2026 • Arma Reforger • Enfusion Engine</p>
+    </footer>
+</body>
+</html>
