@@ -2,10 +2,779 @@
 title: GRS: Night Vision
 description: 
 published: true
-date: 2026-01-27T22:11:54.171Z
+date: 2026-01-27T22:12:23.501Z
 tags: 
 editor: code
 dateCreated: 2026-01-08T16:21:42.520Z
 -->
 
-guide
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHS Night Vision & Lights - Light Identifier Setup Guide</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --accent: #00d9ff;
+            --accent-dim: #0099b3;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --border: #374151;
+            --code-bg: #0d1117;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .page-header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .toc h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .toc ul {
+            list-style: none;
+            columns: 2;
+            gap: 1rem;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: var(--accent);
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent-dim);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin: 1.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin: 1rem 0 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Callouts */
+        .callout {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .callout.warning {
+            border-left-color: var(--warning);
+        }
+
+        .callout.success {
+            border-left-color: var(--success);
+        }
+
+        .callout.error {
+            border-left-color: var(--error);
+        }
+
+        .callout strong {
+            color: var(--text-primary);
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: rgba(0, 217, 255, 0.05);
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Network Diagram */
+        .diagram {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            white-space: pre;
+            color: var(--text-primary);
+        }
+
+        /* Best Practices Grid */
+        .practices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .practice-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .practice-card.do {
+            border-top: 3px solid var(--success);
+        }
+
+        .practice-card.dont {
+            border-top: 3px solid var(--error);
+        }
+
+        .practice-card h4 {
+            margin-top: 0;
+            color: var(--success);
+        }
+
+        .practice-card.dont h4 {
+            color: var(--error);
+        }
+
+        .practice-card ul {
+            margin-left: 1rem;
+        }
+
+        /* Steps */
+        .steps {
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step h4 {
+            margin-top: 0;
+            color: var(--text-primary);
+        }
+
+        /* Troubleshooting */
+        .troubleshoot-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .troubleshoot-item h4 {
+            color: var(--error);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .troubleshoot-item .solution {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Version History */
+        .version-table {
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .support-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .support-section ol {
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .toc ul {
+                columns: 1;
+            }
+
+            .practices-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 1.75rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1>🔦 SHS Night Vision &amp; Lights</h1>
+            <p class="subtitle">Light Identifier Setup Guide</p>
+        </header>
+
+        <nav class="toc">
+            <h2>📑 Table of Contents</h2>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#quick-start">Quick Start</a></li>
+                <li><a href="#detailed-setup">Detailed Setup</a></li>
+                <li><a href="#naming-convention">Naming Convention</a></li>
+                <li><a href="#multiple-lights">Multiple Lights Per Character</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#network-architecture">Network Architecture</a></li>
+                <li><a href="#jip">Join-In-Progress (JIP)</a></li>
+                <li><a href="#best-practices">Best Practices</a></li>
+                <li><a href="#reference">Reference: Component Fields</a></li>
+            </ul>
+        </nav>
+
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>The <strong>Light Identifier</strong> system allows multiple independent lights on a character to sync correctly in multiplayer. Each light component needs a unique identifier string that is consistent across all clients.</p>
+            
+            <div class="callout">
+                <strong>Why is this needed?</strong><br>
+                In multiplayer, attachment entities (like weapon lights) can have different internal IDs on different machines. The Light Identifier provides a reliable, human-readable way to match lights across the network.
+            </div>
+        </section>
+
+        <section id="quick-start">
+            <h2>Quick Start</h2>
+            <ol>
+                <li>Open your prefab containing <code>SHS_NVL_LightsComponent</code></li>
+                <li>Find the <strong>Light Identifier</strong> field</li>
+                <li>Enter a unique name (e.g., <code>"HelmetLight"</code>, <code>"WeaponPEQ15"</code>)</li>
+                <li>Save the prefab</li>
+                <li>Repeat for each light prefab</li>
+            </ol>
+        </section>
+
+        <section id="detailed-setup">
+            <h2>Detailed Setup</h2>
+
+            <div class="steps">
+                <div class="step">
+                    <h4>Open Your Light Prefab</h4>
+                    <p>Navigate to your prefab that has the <code>SHS_NVL_LightsComponent</code> attached. This could be:</p>
+                    <ul>
+                        <li>A helmet attachment</li>
+                        <li>A weapon rail accessory (PEQ-15, flashlight, etc.)</li>
+                        <li>A vest/plate carrier light</li>
+                        <li>Any other equipment with lights</li>
+                    </ul>
+                </div>
+
+                <div class="step">
+                    <h4>Locate the Light Identifier Field</h4>
+                    <p>In the <code>SHS_NVL_LightsComponent</code>, you'll find:</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Light Identifier</strong> ⚠️ Required</td>
+                                <td>Unique string ID for network synchronization</td>
+                            </tr>
+                            <tr>
+                                <td>Light Sources</td>
+                                <td>Array of flashlight/IR configurations</td>
+                            </tr>
+                            <tr>
+                                <td>Toggle Action</td>
+                                <td>Input action for flashlight</td>
+                            </tr>
+                            <tr>
+                                <td>Toggle IR Action</td>
+                                <td>Input action for IR</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="step">
+                    <h4>Set a Unique Identifier</h4>
+                    <p>Enter a descriptive, unique identifier string:</p>
+<pre>Examples:
+├── Helmet Lights
+│   ├── "HelmetLight"
+│   ├── "HelmetLight_Left"
+│   └── "HelmetLight_Right"
+│
+├── Weapon Accessories  
+│   ├── "WeaponPEQ15"
+│   ├── "WeaponPEQ2"
+│   ├── "WeaponM3X"
+│   ├── "WeaponSureFire"
+│   └── "RailFlashlight"
+│
+├── Body/Vest Lights
+│   ├── "VestIRStrobe"
+│   ├── "BackpackLight"
+│   └── "ChestLight"
+│
+└── Vehicle Mounted
+    ├── "VehicleSpotlight"
+    └── "VehicleIR"</pre>
+                </div>
+
+                <div class="step">
+                    <h4>Save and Test</h4>
+                    <ol>
+                        <li>Save your prefab</li>
+                        <li>Launch a multiplayer session (host + client)</li>
+                        <li>Toggle lights on one player</li>
+                        <li>Verify the other player sees the correct light toggle</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section id="naming-convention">
+            <h2>Naming Convention</h2>
+            <p>Use a consistent naming scheme across your mod:</p>
+<pre>[Location][Type][Variant]
+
+Examples:
+- HelmetFlashlight
+- HelmetIRBeacon
+- WeaponPEQ15_Primary
+- WeaponPEQ15_Secondary
+- VestStrobe_Front
+- VestStrobe_Back</pre>
+
+            <h3>Rules</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rule</th>
+                        <th>✅ Good</th>
+                        <th>❌ Bad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>No spaces</td>
+                        <td><code>WeaponLight</code></td>
+                        <td><code>Weapon Light</code></td>
+                    </tr>
+                    <tr>
+                        <td>No special characters</td>
+                        <td><code>PEQ15_Rail</code></td>
+                        <td><code>PEQ-15 (Rail)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Descriptive</td>
+                        <td><code>HelmetMountedNVLight</code></td>
+                        <td><code>Light1</code></td>
+                    </tr>
+                    <tr>
+                        <td>Unique per character</td>
+                        <td>Different IDs for each</td>
+                        <td>Same ID for multiple</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="multiple-lights">
+            <h2>Multiple Lights Per Character</h2>
+            <p>When a character can have multiple lights simultaneously, each <strong>must</strong> have a unique identifier:</p>
+
+            <h3>Example: Soldier with Helmet + Weapon Light</h3>
+            <h4>Helmet Light Prefab:</h4>
+<pre>Light Identifier: "HelmetLight"</pre>
+
+            <h4>Weapon PEQ-15 Prefab:</h4>
+<pre>Light Identifier: "WeaponPEQ15"</pre>
+
+            <h3>Example: Dual Weapon Lights</h3>
+            <p>If a weapon can mount two lights:</p>
+
+            <h4>Primary Rail Light:</h4>
+<pre>Light Identifier: "WeaponLight_Primary"</pre>
+
+            <h4>Secondary Rail Light:</h4>
+<pre>Light Identifier: "WeaponLight_Secondary"</pre>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+
+            <div class="troubleshoot-item">
+                <h4>❌ Light not syncing to other players</h4>
+                <ol>
+                    <li><strong>Check identifier is set</strong> — Empty identifier = no network sync</li>
+                    <li><strong>Check identifier is unique</strong> — Duplicate IDs cause conflicts</li>
+                    <li><strong>Check logs</strong> — Look for <code>[SHS_Network]</code> messages:</li>
+                </ol>
+<pre>[SHS_Network] GetLightIdentifier - ID: WeaponPEQ15
+[SHS_Network] FindLightsComponentByIdentifier - Looking for 'WeaponPEQ15'</pre>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ "Component NOT FOUND" in logs</h4>
+<pre>[SHS_Network] CLIENT - Component NOT FOUND for 'WeaponPEQ15'</pre>
+                <p>This means:</p>
+                <ul>
+                    <li>The identifier doesn't match any light on that character</li>
+                    <li>The light component hasn't initialized yet (rare timing issue)</li>
+                    <li>The prefab identifier was changed but not on all clients</li>
+                </ul>
+                <div class="callout success">
+                    <strong>💡 Solution:</strong> Verify the identifier string is identical in the prefab on both server and client builds.
+                </div>
+            </div>
+
+            <div class="troubleshoot-item">
+                <h4>❌ Lights affecting wrong component</h4>
+                <p>If toggling one light affects a different one:</p>
+                <ul>
+                    <li>Two lights have the same identifier</li>
+                    <li>Change one to be unique</li>
+                </ul>
+            </div>
+
+            <div class="callout warning">
+                <strong>⚠️ Fallback Behavior:</strong><br>
+                If no identifier is set, the system falls back to using the <strong>entity name</strong>. This is less reliable and not recommended for production use.
+            </div>
+        </section>
+
+        <section id="network-architecture">
+            <h2>Network Architecture</h2>
+            <div class="diagram">┌─────────────────────────────────────────────────────────────────┐
+│                        CLIENT A (Owner)                         │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │ Player presses flashlight key                            │   │
+│  │ → LightsComponent.RequestToggleFlashlight()              │   │
+│  │ → NetworkComponent.AskToggleFlashlight(lights)           │   │
+│  │ → Gets identifier: "WeaponPEQ15"                         │   │
+│  │ → Applies state locally                                  │   │
+│  │ → Sends RPC: Rpc_AskSetFlashlight("WeaponPEQ15", true)   │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                           SERVER                                │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │ Receives: Rpc_AskSetFlashlight("WeaponPEQ15", true)      │   │
+│  │ → Stores state in map: m_mFlashlightStates["WeaponPEQ15"]│   │
+│  │ → Finds component by identifier                          │   │
+│  │ → Applies state on server                                │   │
+│  │ → Broadcasts: Rpc_DoSetFlashlight("WeaponPEQ15", true)   │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     CLIENT B (Other Player)                     │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │ Receives: Rpc_DoSetFlashlight("WeaponPEQ15", true)       │   │
+│  │ → Searches character for LightsComponent                 │   │
+│  │ → Matches identifier: "WeaponPEQ15"                      │   │
+│  │ → Applies flashlight state to correct component          │   │
+│  │ → Light is now visible to Client B                       │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘</div>
+        </section>
+
+        <section id="jip">
+            <h2>Join-In-Progress (JIP)</h2>
+            <p>The identifier system also handles players joining mid-game:</p>
+            <ol>
+                <li>New player connects</li>
+                <li>Server sends all stored light states via <code>RplSave</code></li>
+                <li>States are keyed by identifier string</li>
+                <li>Client receives states in <code>RplLoad</code></li>
+                <li>Client matches identifiers to local components</li>
+                <li>All lights restore to correct state</li>
+            </ol>
+        </section>
+
+        <section id="best-practices">
+            <h2>Best Practices</h2>
+            <div class="practices-grid">
+                <div class="practice-card do">
+                    <h4>✅ DO</h4>
+                    <ul>
+                        <li>Set identifiers in the prefab (not at runtime)</li>
+                        <li>Use descriptive, consistent naming</li>
+                        <li>Test with 2+ players before release</li>
+                        <li>Keep identifiers short but meaningful</li>
+                    </ul>
+                </div>
+                <div class="practice-card dont">
+                    <h4>❌ DON'T</h4>
+                    <ul>
+                        <li>Leave identifier empty for networked lights</li>
+                        <li>Use the same identifier for different light types</li>
+                        <li>Change identifiers after release (breaks saved states)</li>
+                        <li>Use runtime-generated identifiers</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="reference">
+            <h2>Reference: Component Fields</h2>
+            <h3>SHS_NVL_LightsComponent</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>Light Identifier</code></td>
+                        <td>string</td>
+                        <td>⚠️ <strong>Required for MP</strong> — Unique network ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>Light Sources</code></td>
+                        <td>array</td>
+                        <td>Flashlight/IR light configurations</td>
+                    </tr>
+                    <tr>
+                        <td><code>Toggle Action</code></td>
+                        <td>string</td>
+                        <td>Input action name for flashlight</td>
+                    </tr>
+                    <tr>
+                        <td><code>Toggle IR Action</code></td>
+                        <td>string</td>
+                        <td>Input action name for IR</td>
+                    </tr>
+                    <tr>
+                        <td><code>Brightness Up Action</code></td>
+                        <td>string</td>
+                        <td>Input for increasing brightness</td>
+                    </tr>
+                    <tr>
+                        <td><code>Brightness Down Action</code></td>
+                        <td>string</td>
+                        <td>Input for decreasing brightness</td>
+                    </tr>
+                    <tr>
+                        <td><code>Default Flashlight Brightness</code></td>
+                        <td>float</td>
+                        <td>Starting brightness (LV)</td>
+                    </tr>
+                    <tr>
+                        <td><code>Default IR Brightness</code></td>
+                        <td>float</td>
+                        <td>Starting IR brightness (LV)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="version-history">
+            <h2>Version History</h2>
+            <table class="version-table">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Changes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1.0</td>
+                        <td>Initial identifier-based networking system</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="support">
+            <h2>Support</h2>
+            <div class="support-section">
+                <p>If you encounter issues:</p>
+                <ol>
+                    <li>Enable logging and check for <code>[SHS_Network]</code> and <code>[SHS_Lights]</code> messages</li>
+                    <li>Verify identifier strings match exactly (case-sensitive)</li>
+                    <li>Test in a clean multiplayer environment</li>
+                    <li>Report issues with log files attached</li>
+                </ol>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
